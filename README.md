@@ -1,6 +1,8 @@
 # ofxMediaPipePython
 Addon for running python version of MediaPipe within an OpenFrameworks application using pybind.
 
+![ofxMediaPipe Example](images/ofxMediaPipeExample.png)
+
 ## Tracking
 ### Faces: https://ai.google.dev/edge/mediapipe/solutions/vision/face_landmarker/python
 ### Hands: https://ai.google.dev/edge/mediapipe/solutions/vision/hand_landmarker/python
@@ -19,6 +21,8 @@ To install:
 `./InstallMediaPipe.sh`
 
 Build the example projects using the Project Generator. 
+
+![ofxMediaPipe Example](images/PG.png)
 
 # OSC Sending and Receiving
 ![ofxMediaPipe OSC TX RX Example](images/ofxMediaPipeOscTxRx.png)
