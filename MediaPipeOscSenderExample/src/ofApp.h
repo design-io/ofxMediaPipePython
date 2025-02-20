@@ -3,8 +3,8 @@
 //#define OF_ADDON_HAS_OFX_OSC
 
 #include "ofMain.h"
-#include "ofxMediaPipeHandTracker.hpp"
-#include "ofxMediaPipeFaceTracker.hpp"
+#include "ofxMediaPipeHandTracker.h"
+#include "ofxMediaPipeFaceTracker.h"
 #include "ofxMediaPipePoseTracker.h"
 #include "ofxMediaPipeOscSender.h"
 #include "ofxGui.h"
