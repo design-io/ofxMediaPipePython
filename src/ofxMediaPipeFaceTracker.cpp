@@ -33,7 +33,7 @@ FaceTracker::~FaceTracker() {
 //-------------------------------------------------
 ofParameterGroup& FaceTracker::getParams() {
 	if( params.size() < 1 ) {
-		params.setName(mGuiPrefix+"-MediaPipeFaceTracker");
+		params.setName(mGuiPrefix+"MediaPipeFaceTracker");
 		
 		_addToParams();
 		params.add( mBDrawIrises );

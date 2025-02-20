@@ -12,7 +12,7 @@ void ofApp::setup(){
 	
 	
 	gui.setup();
-	gui.setPosition(24, 128);
+	gui.setPosition(24, 24);
 	
 	mMPReceiver = std::make_shared<ofx::MediaPipe::OscReceiver>();
 	mMPReceiver->getParams().setName("ofxMediaPipeOscReceiver");
