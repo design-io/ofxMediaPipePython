@@ -52,10 +52,6 @@ public:
 	ofTexture& getMaskTexture();
 	int getNumRawPoses() { return mRawPoses.size(); }
 	
-//	bool isFilteringByEarDist() { return mBFilterByEarDist;}
-//	float getMinEarDist() { return mSrcRect.getWidth() * mMinEarDist;}
-//	float getMinEarDistToBeginTracking() { return mSrcRect.getWidth() * mMinEarDistToBeginTracking;}
-	
 protected:
 	void _update() override;
 	void _process_landmark_results( py::object& aresults, int aTimestamp) override;
@@ -70,12 +66,7 @@ protected:
 	PoseSettings mSettings;
 	
 	ofParameter<bool> mBDrawMask;
-//	ofParameter<bool> mBFilterMatchingFaces;
-//	ofParameter<float> mMatchFaceDistance;
 	ofParameter<float> mPosSmoothing;
-	
-//	ofParameter<bool> mBFilterByEarDist;
-//	ofParameter<float> mMinEarDist, mMinEarDistToBeginTracking;
 	
 	std::vector< std::shared_ptr<Pose> > mThreadedPoses;
 	std::vector< std::shared_ptr<Pose> > mPoses, mRawPoses;

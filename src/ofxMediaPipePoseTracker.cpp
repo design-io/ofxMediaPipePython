@@ -44,13 +44,6 @@ ofParameterGroup& PoseTracker::getParams() {
 			params.add( mBDrawMask );
 		}
 		params.add( mPosSmoothing );
-		
-//		params.add( mBFilterMatchingFaces );
-//		params.add( mMatchFaceDistance );
-		
-//		params.add( mBFilterByEarDist );
-//		params.add( mMinEarDist );
-//		params.add( mMinEarDistToBeginTracking );
 	}
 	return params;
 }
@@ -460,118 +453,6 @@ void PoseTracker::_matchPoses( std::vector< std::shared_ptr<Pose>>& aIncomingPos
 	
 	auto validIncomingPoses = aIncomingPoses;
 	
-	// lets try to filter out wonky poses
-	// ie if poses have the same face, check which might be the better solution //
-//	if( mBFilterMatchingFaces && aIncomingPoses.size() > 1 ) {
-//		validIncomingPoses.clear();
-//		float maxFaceDist = mMatchFaceDistance;
-//		
-//		std::vector<bool> poseValidities( aIncomingPoses.size(), true );
-//		
-//		for( std::size_t i = 0; i < aIncomingPoses.size()-1; i++ ) {
-//			if(!poseValidities[i]) {
-//				// we have already determined this pose to be invalid //
-//				continue;
-//			}
-//			
-//			auto cpose = aIncomingPoses[i];
-//			bool bPoseValid = true;
-//			for( std::size_t j = i+1; j < aIncomingPoses.size(); j++ ) {
-//				if(!poseValidities[j]) {
-//					// already determined to be invalid
-//					continue;
-//				}
-//				auto opose = aIncomingPoses[j];
-//				if( cpose.get() == opose.get() ) {
-//					continue; // just in case
-//				}
-//				float faceDist = glm::distance(cpose->getFacePositionNormalized(), opose->getFacePositionNormalized());
-//				if( faceDist < maxFaceDist ) {
-//					
-//					// we need to choose one, so make sure if we can't pick the best, choose one //
-//					bool bFiltered = false;
-//					// ok, we potentially have a conflict. Lets try to select the best one //
-//					bool cup = _isFaceDirectionUp( cpose );
-//					bool oup = _isFaceDirectionUp( opose );
-//					if( cup != oup ) {
-//						if( cup && !oup ) {
-//							// other pose is not valid
-//							// we want to have the face direction up
-//							poseValidities[j] = false;
-//						} else {
-//							// our current pose is not valid, carry on
-//							poseValidities[i] = false;
-//							continue;
-//						}
-//						bFiltered = true;
-//					}
-//					
-//					// are our feet above our head?
-//					bool cfeet = _areFeetAboveHead(cpose);
-//					bool ofeet = _areFeetAboveHead(opose);
-//					if( cfeet != ofeet) {
-//						if( cfeet ) {
-//							// our current is invalid since feet are above head
-//							poseValidities[i] = false;
-//							continue;
-//						} else {
-//							// the other pose has feet above head
-//							poseValidities[j] = false;
-//						}
-//						bFiltered = true;
-//					}
-//					
-//					if( !bFiltered ) {
-//						
-//						int betterIndex = _hasBetterMatchToExistingPose( cpose, opose, aPoses );
-//						if( betterIndex < 1 ) {
-//							// the current pose has a better match
-//							// invalidate the other
-//							poseValidities[j] = false;
-//						} else {
-//							// the other pose has a better match
-//							poseValidities[i] = false;
-//						}
-//						
-//						// we just have to choose one, so hopefully it's the first one
-//						// it should be better than having two overlapping poses
-////						poseValidities[j] = false;
-//					}
-//					
-//				}
-//			}
-//			
-//			if( poseValidities[i] ) {
-//				validIncomingPoses.push_back(cpose);
-//			}
-//		}
-//		
-//		
-////		ofLogNotice( "MediaPipePoseTracker" ) << "_matchPoses :: num incoming poses: " << aIncomingPoses.size() << " num valid: " << validIncomingPoses.size() << " | " << ofGetFrameNum();
-//	}
-	
-//	float earDistToKeepTracking = mMinEarDist * mSrcRect.getWidth();
-//	float earDistToStartTracking = mMinEarDistToBeginTracking * mSrcRect.getWidth();
-//	if( earDistToKeepTracking > earDistToStartTracking ) {
-//		earDistToKeepTracking = earDistToStartTracking;
-//	}
-	
-//	// first lets see if the poses have met the continued ear distance
-//	if( mBFilterByEarDist ) {
-//		for( auto& pose : aPoses ) {
-//			auto p1 = pose->getKeypointForIndex(Pose::RIGHT_EAR).pos;
-//			auto p2 = pose->getKeypointForIndex(Pose::LEFT_EAR).pos;
-//			float earDist = glm::length(p2-p1);
-//			
-//			ofLogNotice("PoseTracker::_matchPoses") << "pose: " << pose->ID << " right ear: " << p1 << " left ear: " << p2 << " dist: " << earDist << " | " << ofGetFrameNum();
-//			
-//			if( earDist < earDistToKeepTracking ) {
-//				continue;
-//			}
-//		}
-//	}
-	
-	
 	float maxDistToMatch2 = mMaxDistToMatch * mMaxDistToMatch;
 	//	glm::vec3 posN = {0.f, 0.f, 0.f };
 	// now lets try to find a hand to match //
@@ -587,21 +468,6 @@ void PoseTracker::_matchPoses( std::vector< std::shared_ptr<Pose>>& aIncomingPos
 //			float dist2 = glm::distance2( pose->getPositionNormalized(), aInPose->getPositionNormalized() );
 			float dist = glm::distance( pose->getPositionNormalized(), aInPose->getPositionNormalized() );
 			if( dist < mMaxDistToMatch ) {
-				
-				// filter through the ear distance to continue tracking //
-				// this value should be smaller than the begin tracking value
-//				if( mBFilterByEarDist ) {
-//					auto p1 = pose->getKeypointForIndex(Pose::RIGHT_EAR).pos;
-//					auto p2 = pose->getKeypointForIndex(Pose::LEFT_EAR).pos;
-//					float earDist = glm::length(p2-p1);
-//					
-//					ofLogNotice("PoseTracker::_matchPoses") << "pose: " << pose->ID << " right ear: " << p1 << " left ear: " << p2 << " dist: " << earDist << " | " << ofGetFrameNum();
-//					
-//					if( earDist < earDistToKeepTracking ) {
-//						continue;
-//					}
-//				}
-				
 				// possible hand match //
 				pose->trackingData.matchDistance += dist;
 				
@@ -621,14 +487,6 @@ void PoseTracker::_matchPoses( std::vector< std::shared_ptr<Pose>>& aIncomingPos
 			myPose = bestMatch;
 		} else {
 			bool bYeahMakeOne = true;
-//			if( mBFilterByEarDist ) {
-//				auto p1 = aInPose->getPosForIndex(Pose::RIGHT_EAR);
-//				auto p2 = aInPose->getPosForIndex(Pose::LEFT_EAR);
-//				float earDist = glm::length(p2-p1);
-//				if( earDist < earDistToStartTracking ) {
-//					bYeahMakeOne = false;
-//				}
-//			}
 			if(bYeahMakeOne) {
 				// we need to add a pose //
 				myPose = std::make_shared<Pose>(*(aInPose.get()));
