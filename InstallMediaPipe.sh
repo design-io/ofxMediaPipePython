@@ -134,6 +134,10 @@ python_addon_install_path="${python_addon_install_dir}/${python_lib_name}"
 if [ -e ${python_addon_install_path} ]; then
 	echo "Already have ${python_addon_install_path}, not copying."
 else 
+	if [ ! -d $python_addon_install_dir ]; then 
+		mkdir -p "$python_addon_install_dir"
+	fi
+
 	if [ -e ${python_dylib} ]; then
 		echo "Found the python lib at ${python_dylib}."
 		echo "Copying to ${python_addon_install_path}."
