@@ -12,6 +12,7 @@
 #include "ofEvents.h"
 #include "ofPixels.h"
 #include "ofParameter.h"
+#include <condition_variable>
 
 #if !defined(OFX_MEDIAPIPE_EXCLUDE_TRACKERS)
 

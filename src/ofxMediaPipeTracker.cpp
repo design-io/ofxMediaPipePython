@@ -230,8 +230,8 @@ void Tracker::_process_image(const ofPixels& apix) {
 	}
 
 	
-	if( apix.getNumChannels() != 1 && apix.getNumChannels() != 3 ) {
-		ofLogWarning("Tracker::_process_image") << "pixels must have 1 or 3 channels, not " << apix.getNumChannels();
+	if( apix.getNumChannels() != 3 ) {
+		ofLogWarning("Tracker::_process_image") << "pixels must have 3 channels, not " << apix.getNumChannels();
 		return;
 	}
 	
