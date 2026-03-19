@@ -76,7 +76,7 @@ if [ $conda_is_already_installed = 0 ]; then
 		source ~/.bash_profile
 	elif [[ "$OSTYPE" =~ ^linux ]]; then
 		# reinit bash profile
-		source ~/.bash_profile
+		source ~/.bashrc
 	fi
 
 fi
